@@ -40,19 +40,30 @@ public class EmployeeInfoRestWebApp
 
         ServletHolder servlet = new ServletHolder(new ServletContainer(resourceConfig));
 
+
+        String PORT = System.getenv("PORT");
+
+        logger.info("Environment PORT: " + PORT);
+
+        int Port = Integer.parseInt(PORT);
+
+
+
         // Read server listening port value from property file
         String propertyValue = propertyHelper.getPropertyValue(SERVER_LISTENING_PORT_KEY);
 
         if (!StringUtils.isEmpty(propertyValue)) {
 
             int SERVER_LISTENING_PORT = Integer.parseInt(propertyValue);
-            Server server = new Server(SERVER_LISTENING_PORT);
+            //Server server = new Server(SERVER_LISTENING_PORT);
+
+            Server server = new Server(Port);
 
             ServletContextHandler context = new ServletContextHandler(server, "/*");
             context.addServlet(servlet, "/*");
 
             try {
-                logger.info("Server listening on port: " + SERVER_LISTENING_PORT );
+                logger.info("Server listening on port: " + Port );
                 server.start();
                 server.join();
 
