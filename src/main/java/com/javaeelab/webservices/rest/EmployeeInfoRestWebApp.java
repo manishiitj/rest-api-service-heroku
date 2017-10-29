@@ -23,19 +23,21 @@ public class EmployeeInfoRestWebApp
 
     private final static String SERVER_LISTENING_PORT_KEY = "server.listening.port";
 
+    private final static String APPLICATION_NAME = "application.name";
+
     private final static PropertyHelper propertyHelper = new PropertyHelper();
 
     public static void main( String[] args ) {
 
         BasicConfigurator.configure();
+        logger.info(propertyHelper.getPropertyValue(APPLICATION_NAME));
         logger.info("Starting server.." );
 
         ResourceConfig resourceConfig = new ResourceConfig();
 
         resourceConfig.packages(EmployeeInfoApi.class.getPackage().getName());
-        logger.info("Resource package name: " + EmployeeInfoApi.class.getPackage().getName() );
-
         resourceConfig.register(JacksonFeature.class);
+
         ServletHolder servlet = new ServletHolder(new ServletContainer(resourceConfig));
 
         // Read server listening port value from property file
@@ -50,9 +52,9 @@ public class EmployeeInfoRestWebApp
             context.addServlet(servlet, "/*");
 
             try {
+                logger.info("Server listening on port: " + SERVER_LISTENING_PORT );
                 server.start();
                 server.join();
-                logger.info("Server listening on port" + SERVER_LISTENING_PORT );
 
             } catch (Exception e) {
                 logger.error("Problem in running server: " + e.getMessage());
