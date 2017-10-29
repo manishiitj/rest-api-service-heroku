@@ -1,16 +1,20 @@
 # Employee information REST web service
 
-This repository contains a maven project which demonstrates java jersey web service. The web service maintains employee
+This repository contains a maven project which demonstrates java jersey web service with embedded Jetty. The web service maintains employee
 information in an organisation. The employee information can be manipulated (Add, delete, fetch) by REST APIs.
 
 ## What it covers?
 - Maven project structure
- - Handling build dependencies, plugins packages etc.
+  - Handling build dependencies, plugins, packaging..
+  - Use of external libraries in maven projects, like logger, String utilities..
 - REST API resources
 	- HTTP request handling
 	- Data Transfer Object (DTO)
 	- Converting Java POJO to/from XML and JSON 
-- Use of external libraries in maven projects, like logger, String utilities etc.
+- Embedding Jetty server in application.
+- Deploying REST service on Heroku cloud platform
+
+## Deployment
 
 ## API methods
 Following API methods are supported,

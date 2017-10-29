@@ -21,57 +21,45 @@ public class EmployeeInfoRestWebApp
 {
     private final static Logger logger = Logger.getLogger(EmployeeInfoRestWebApp.class);
 
-    private final static String SERVER_LISTENING_PORT_KEY = "server.listening.port";
-
     private final static String APPLICATION_NAME = "application.name";
+
+    private static String PORT = System.getenv("PORT");
 
     private final static PropertyHelper propertyHelper = new PropertyHelper();
 
+
     public static void main( String[] args ) {
 
+        logger.info("Starting " + propertyHelper.getPropertyValue(APPLICATION_NAME));
+
+        logger.info("Read port from environment variable PORT: " + PORT);
+        if (StringUtils.isEmpty(PORT)) {
+            logger.error("Problem in reading port value from environment variable PORT: ");
+            return;
+        }
+
+        int Port = Integer.parseInt(PORT);
+
         BasicConfigurator.configure();
-        logger.info(propertyHelper.getPropertyValue(APPLICATION_NAME));
-        logger.info("Starting server.." );
-
         ResourceConfig resourceConfig = new ResourceConfig();
-
         resourceConfig.packages(EmployeeInfoApi.class.getPackage().getName());
         resourceConfig.register(JacksonFeature.class);
 
         ServletHolder servlet = new ServletHolder(new ServletContainer(resourceConfig));
+        Server server = new Server(Port);
 
+        ServletContextHandler context = new ServletContextHandler(server, "/*");
+        context.addServlet(servlet, "/*");
 
-        String PORT = System.getenv("PORT");
+        try {
+            logger.info("Server listening on port: " + Port );
+            server.start();
+            server.join();
 
-        logger.info("Environment PORT: " + PORT);
-
-        int Port = Integer.parseInt(PORT);
-
-
-
-        // Read server listening port value from property file
-        String propertyValue = propertyHelper.getPropertyValue(SERVER_LISTENING_PORT_KEY);
-
-        if (!StringUtils.isEmpty(propertyValue)) {
-
-            int SERVER_LISTENING_PORT = Integer.parseInt(propertyValue);
-            //Server server = new Server(SERVER_LISTENING_PORT);
-
-            Server server = new Server(Port);
-
-            ServletContextHandler context = new ServletContextHandler(server, "/*");
-            context.addServlet(servlet, "/*");
-
-            try {
-                logger.info("Server listening on port: " + Port );
-                server.start();
-                server.join();
-
-            } catch (Exception e) {
-                logger.error("Problem in running server: " + e.getMessage());
-            } finally {
-                server.destroy();
-            }
+        } catch (Exception e) {
+            logger.error("Problem in running server: " + e.getMessage());
+        } finally {
+            server.destroy();
         }
     }
 }
