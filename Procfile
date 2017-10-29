@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* EmployeeRestService
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.javaeelab.webservices.rest.ServerApp
