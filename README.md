@@ -1,4 +1,4 @@
-Employee information REST web service
+# Employee information REST web service
 
 This repository contains a maven project which demonstrates java jersey web service. The web service maintains employee
 information in an organisation. The employee information can be manipulated (Add, delete, fetch) by REST APIs.
