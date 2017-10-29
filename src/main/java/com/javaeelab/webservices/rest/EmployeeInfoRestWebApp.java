@@ -23,29 +23,35 @@ public class EmployeeInfoRestWebApp
 
     private final static String APPLICATION_NAME = "application.name";
 
-    private static String PORT = System.getenv("PORT");
+    private final static String SERVER_LISTENING_PORT_KEY = "server.listening.port";
+
+    private final static int DEFAULT_SERVER_PORT = 8888;
 
     private final static PropertyHelper propertyHelper = new PropertyHelper();
 
 
     public static void main( String[] args ) {
 
+        BasicConfigurator.configure();
         logger.info("Starting " + propertyHelper.getPropertyValue(APPLICATION_NAME));
 
-        logger.info("Read port from environment variable PORT: " + PORT);
-        if (StringUtils.isEmpty(PORT)) {
-            logger.error("Problem in reading port value from environment variable PORT: ");
-            return;
-        }
-
-        int Port = Integer.parseInt(PORT);
-
-        BasicConfigurator.configure();
         ResourceConfig resourceConfig = new ResourceConfig();
         resourceConfig.packages(EmployeeInfoApi.class.getPackage().getName());
         resourceConfig.register(JacksonFeature.class);
 
         ServletHolder servlet = new ServletHolder(new ServletContainer(resourceConfig));
+
+        // First read Port from environment variable
+        String PORT = System.getenv("PORT");
+        logger.info("Read port from environment variable PORT: " + PORT);
+
+        if (StringUtils.isEmpty(PORT)) {
+            // if environment variable PORT is not set then read from local config file
+            PORT = propertyHelper.getPropertyValue(SERVER_LISTENING_PORT_KEY);
+            logger.info("Read port from config properties: " + PORT);
+        }
+
+        int Port = !StringUtils.isEmpty(PORT) ? Integer.parseInt(PORT) : DEFAULT_SERVER_PORT;
         Server server = new Server(Port);
 
         ServletContextHandler context = new ServletContextHandler(server, "/*");
