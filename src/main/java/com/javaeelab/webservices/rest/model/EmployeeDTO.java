@@ -10,8 +10,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlElement;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @XmlType(propOrder={"id", "name", "department"})
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class EmployeeDTO {
 
     private Integer id;
@@ -28,7 +28,6 @@ public class EmployeeDTO {
     public void setId(Integer id) {
         this.id = id;
     }
-
 
     @XmlElement(name = "name")
     public String getName() {
