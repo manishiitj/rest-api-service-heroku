@@ -16,7 +16,7 @@ information in an organisation. The employee information can be manipulated (Add
 
 ## Deployment
 The rest service is deployed on Heroku and can be accessed by,
-> https://employee-rest-service.herokuapp.com/employees/{all|{id}|add}
+> https://employee-rest-service.herokuapp.com/employees/all
 
 ## API methods
 Following API methods are supported,
