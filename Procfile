@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.javaeelab.webservices.rest.EmployeeInfoRestWebApp
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.javaeelab.webservices.rest.EmployeeInfoRestWebApp --port $PORT
