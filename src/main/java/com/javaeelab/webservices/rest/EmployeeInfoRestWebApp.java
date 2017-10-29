@@ -17,9 +17,9 @@ import org.glassfish.jersey.jackson.JacksonFeature;
  *
  */
 
-public class ServerApp
+public class EmployeeInfoRestWebApp
 {
-    private final static Logger logger = Logger.getLogger(ServerApp.class);
+    private final static Logger logger = Logger.getLogger(EmployeeInfoRestWebApp.class);
 
     private final static String SERVER_LISTENING_PORT_KEY = "server.listening.port";
 
