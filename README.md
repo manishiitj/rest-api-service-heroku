@@ -4,13 +4,13 @@ This repository contains a maven project which demonstrates java jersey web serv
 information in an organisation. The employee information can be manipulated (Add, delete, fetch) by REST APIs.
 
 ## What it covers?
-- Maven project structure
-  - Handling build dependencies, plugins, packaging..
-  - Use of external libraries in maven projects, like logger, String utilities..
 - REST API resources
 	- HTTP request handling
 	- Data Transfer Object (DTO)
 	- Converting Java POJO to/from XML and JSON 
+- Maven project structure
+  - Handling build dependencies, plugins, packaging..
+  - Use of external libraries in maven projects, like logger, String utilities..
 - Embedding Jetty server in application.
 - Deploying REST service on Heroku cloud platform
 

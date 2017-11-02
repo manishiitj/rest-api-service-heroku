@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/employee_rest_web_services.iml" filepath="$PROJECT_DIR$/employee_rest_web_services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rest_api_services_heroku.iml" filepath="$PROJECT_DIR$/rest_api_services_heroku.iml" />
     </modules>
   </component>
 </project>
