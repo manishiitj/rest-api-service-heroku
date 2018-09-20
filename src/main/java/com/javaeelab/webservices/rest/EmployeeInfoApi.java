@@ -6,8 +6,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.javaeelab.webservices.rest.model.EmployeesDTO;
+import com.javaeelab.webservices.rest.model.Student;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author azam.akram
@@ -25,10 +29,16 @@ public class EmployeeInfoApi {
 
     @GET
     @Path("all")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON})
     public Response getAllEmployees() {
         logger.info("Returning all employee record");
-        return Response.ok(getEmpInfoService().getAllEmployees()).build();
+        Student student = new Student("Hi",12);
+        Student student1 = new Student("HWRt", 32);
+
+        List<Student> studentList = new ArrayList<>();
+        studentList.add(student);
+        studentList.add(student1);
+        return Response.ok(studentList).build();
     }
 
     @GET
@@ -64,19 +74,6 @@ public class EmployeeInfoApi {
 
         getEmpInfoService().addEmployee(employeesDTO);
         return Response.ok().build();
-    }
-
-    @DELETE
-    @Path("{id}")
-    public Response deleteEmployee(@PathParam("id") String id) {
-
-        if (getEmpInfoService().deleteEmployee(Integer.parseInt(id))) {
-            logger.info("Deleted employee with id = " + id);
-            return Response.ok().build();
-        }
-
-        logger.info("Id is not valid");
-        return Response.status(Status.BAD_REQUEST).build();
     }
 
     private EmployeeInfoService getEmpInfoService() {

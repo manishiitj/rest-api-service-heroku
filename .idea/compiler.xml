@@ -7,11 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="employee_rest_web_services" />
+        <module name="rest_api_services_heroku" />
         <module name="rest_web_services" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="employee_rest_web_services" target="1.7" />
+      <module name="rest_api_services_heroku" target="1.7" />
       <module name="rest_web_services" target="1.7" />
     </bytecodeTargetLevel>
   </component>
