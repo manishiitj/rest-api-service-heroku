@@ -8,8 +8,10 @@ import javax.ws.rs.core.Response.Status;
 import com.javaeelab.webservices.rest.model.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
@@ -38,22 +40,30 @@ public class EmployeeInfoApi {
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllEmployees() {
         logger.info("Returning all employee record");
-        Order order = new Order();
 
         Configuration configuration = new Configuration().configure();
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().
                 applySettings(configuration.getProperties());
         SessionFactory factory = configuration.buildSessionFactory(builder.build());
+
+
         Session session = factory.openSession();
-        session.beginTransaction();
+        Transaction tx = null;
 
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setName("Hello");
-        session.save(orderEntity);
 
-        session.getTransaction().commit();
-        session.close();
-        return Response.ok().build();
+        try {
+            tx = session.beginTransaction();
+            session.save(orderEntity);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return Response.ok(orderEntity).build();
     }
 
 //    @GET
