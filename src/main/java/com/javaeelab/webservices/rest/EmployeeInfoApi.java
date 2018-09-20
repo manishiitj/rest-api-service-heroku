@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
 import java.text.SimpleDateFormat;
@@ -39,9 +40,11 @@ public class EmployeeInfoApi {
         logger.info("Returning all employee record");
         Order order = new Order();
 
-        SessionFactory sessionFactory = new Configuration().configure()
-                .buildSessionFactory();
-        Session session = sessionFactory.openSession();
+        Configuration configuration = new Configuration().configure();
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().
+                applySettings(configuration.getProperties());
+        SessionFactory factory = configuration.buildSessionFactory(builder.build());
+        Session session = factory.openSession();
         session.beginTransaction();
 
         OrderEntity orderEntity = new OrderEntity();
