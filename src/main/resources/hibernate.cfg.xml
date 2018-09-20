@@ -8,7 +8,7 @@
 
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgres://zokvxifscrgezc:f73c3e252b4eefc05c145cc1deb5827446b6196b1d8b741eea827bed5f334911@ec2-54-243-147-162.compute-1.amazonaws.com:5432/db0a2o1rbri4t8</property>
+        <property name="hibernate.connection.url">jdbc:postgres://ec2-54-243-147-162.compute-1.amazonaws.com:5432/db0a2o1rbri4t8</property>
         <property name="hibernate.connection.username">zokvxifscrgezc</property>
         <property name="hibernate.connection.password">f73c3e252b4eefc05c145cc1deb5827446b6196b1d8b741eea827bed5f334911</property>
 
