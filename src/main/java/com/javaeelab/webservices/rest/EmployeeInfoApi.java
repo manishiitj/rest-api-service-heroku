@@ -53,7 +53,7 @@ public class EmployeeInfoApi {
 
         session.getTransaction().commit();
         session.close();
-        return Response.ok("Saved order").build();
+        return Response.ok().build();
     }
 
 //    @GET
