@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response.Status;
 import com.javaeelab.webservices.rest.model.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -66,69 +67,58 @@ public class EmployeeInfoApi {
         return Response.ok(orderEntity).build();
     }
 
-//    @GET
-//    @Path("{id}")
-//    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-//    public Response getEmployeeById(@PathParam("id") String id) {
-//
-//        if (StringUtils.isEmpty(id) && Integer.parseInt(id) < 0) {
-//            logger.info("Id is not valid");
-//            return Response.status(Status.BAD_REQUEST).entity("Id must be greater than 0").build();
-//        }
-//
-//        EmployeesDTO employees = getEmpInfoService().getEmployeeById(Integer.parseInt(id));
-//
-//        if (employees != null) {
-//            logger.info("Returning the required record with id = " + id);
-//            return Response.ok().entity(employees).build();
-//        }
-//
-//        logger.info("No record found");
-//        return Response.ok().entity("No record found").build();
-//    }
-//
-//    @POST
-//    @Path("add")
-//    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-//    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-//    public Response addEmployee(final EmployeesDTO employeesDTO) {
-//
-//        if (employeesDTO == null) {
-//            return Response.status(Status.BAD_REQUEST).entity("Empty data to add employee").build();
-//        }
-//
-//        getEmpInfoService().addEmployee(employeesDTO);
-//        return Response.ok().build();
-//    }
-//
-//    private EmployeeInfoService getEmpInfoService() {
-//        return EmployeeInfoServiceFactory.getEmployeeInfoService();
-//    }
-//
-//    @POST
-//    @Path("placeOrder")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public Response placeOrder(PlaceOrderRequest placeOrderRequest) throws Exception {
-//        String orderId = String.valueOf(new Random().nextInt(1000000));
-//        OrderDO orderDO = OrderDO.builder().orderId(orderId).itemId(placeOrderRequest.itemId)
-//                .sellerId(placeOrderRequest.sellerId).customerId(placeOrderRequest.customerId)
-//                .entityId(placeOrderRequest.sellerId.split("_")[0] + "_" + placeOrderRequest.customerId.split("_")[0])
-//                .status("orderPlaced").weight(itemDAO.getWeightOfItem((placeOrderRequest.itemId))).build();
-//        orderDAO.saveOrder(orderDO);
-//
-//        int nextSlot = new Random().nextInt(10);
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-//        Calendar cal = Calendar.getInstance();
-//        cal.add(Calendar.DAY_OF_MONTH, nextSlot);
-//        String newDate = sdf.format(cal.getTime());
-//
-//        PlaceOrderResponse placeOrderResponse = PlaceOrderResponse.builder().date(newDate).orderId(orderId)
-//                .status("OrderPlaced").build();
-//        String json = objectMapper.writeValueAsString(placeOrderResponse);
-//
-//        return Response.ok(json, MediaType.APPLICATION_JSON).build();
-//    }
+
+    @POST
+    @Path("placeOrder")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response placeOrder(PlaceOrderRequest placeOrderRequest) throws Exception {
+        logger.info("Returning all employee record");
+
+        Configuration configuration = new Configuration().configure();
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().
+                applySettings(configuration.getProperties());
+        SessionFactory factory = configuration.buildSessionFactory(builder.build());
+
+
+        Session session = factory.openSession();
+        Transaction tx = null;
+
+        String orderId = String.valueOf(new Random().nextInt(1000000));
+        Order orderDO = new Order();
+        orderDO.setOrderid(orderId);
+        orderDO.setCustomerid(placeOrderRequest.customerId);
+        orderDO.setSellerid(placeOrderRequest.sellerId);
+        orderDO.setItemid(placeOrderRequest.itemId);
+        orderDO.setEntityid(placeOrderRequest.sellerId.split("_")[0] + "_" + placeOrderRequest.customerId.split("_")
+                [0]);
+        orderDO.setStatus("orderPlaced");
+        orderDO.setWeight(20);
+
+        try {
+            tx = session.beginTransaction();
+            session.save(orderDO);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        int nextSlot = new Random().nextInt(10);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, nextSlot);
+        String newDate = sdf.format(cal.getTime());
+
+        PlaceOrderResponse placeOrderResponse = PlaceOrderResponse.builder().date(newDate).orderId(orderId)
+                .status("OrderPlaced").build();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(placeOrderResponse);
+
+        return Response.ok(json, MediaType.APPLICATION_JSON).build();
+    }
 //
 //    @POST
 //    @Path("getOrders")
