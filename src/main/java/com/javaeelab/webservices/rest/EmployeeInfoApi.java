@@ -35,9 +35,10 @@ public class EmployeeInfoApi {
 
     private static List<Order> US_IN = Arrays.asList(
             Order.builder().customerid("IN_BLR").sellerid("US_1").entityid("US_IN").itemid("CAMERA").nextcycle
-                    ("25Sept18").orderid("1").status("OrderPlace").weight(8).build();
-    private static Order US_EU
-    private static Order CN_
+                    ("25Sept18").orderid("1").status("OrderPlace").weight(8).build()
+    );
+    private static Order US_EU;
+    private static Order CN;
 
     @GET
     @Path("all")
