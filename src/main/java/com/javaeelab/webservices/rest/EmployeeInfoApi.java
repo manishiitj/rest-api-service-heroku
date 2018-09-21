@@ -17,10 +17,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author azam.akram
@@ -35,6 +32,12 @@ import java.util.Random;
 public class EmployeeInfoApi {
 
     private final static Logger logger = Logger.getLogger(EmployeeInfoApi.class);
+
+    private static List<Order> US_IN = Arrays.asList(
+            Order.builder().customerid("IN_BLR").sellerid("US_1").entityid("US_IN").itemid("CAMERA").nextcycle
+                    ("25Sept18").orderid("1").status("OrderPlace").weight(8).build();
+    private static Order US_EU
+    private static Order CN_
 
     @GET
     @Path("all")
@@ -73,49 +76,13 @@ public class EmployeeInfoApi {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response placeOrder(PlaceOrderRequest placeOrderRequest) throws Exception {
-        logger.info("Returning all employee record");
 
-        Configuration configuration = new Configuration().configure();
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().
-                applySettings(configuration.getProperties());
-        SessionFactory factory = configuration.buildSessionFactory(builder.build());
-
-
-        Session session = factory.openSession();
-        Transaction tx = null;
-
-        String orderId = String.valueOf(new Random().nextInt(1000000));
-        Order orderDO = new Order();
-        orderDO.setOrderid(orderId);
-        orderDO.setCustomerid(placeOrderRequest.customerId);
-        orderDO.setSellerid(placeOrderRequest.sellerId);
-        orderDO.setItemid(placeOrderRequest.itemId);
-        orderDO.setEntityid(placeOrderRequest.sellerId.split("_")[0] + "_" + placeOrderRequest.customerId.split("_")
-                [0]);
-        orderDO.setStatus("orderPlaced");
-        orderDO.setWeight(20);
-
-        try {
-            tx = session.beginTransaction();
-            session.save(orderDO);
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx!=null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
+        PlaceOrderResponse placeOrderResponse = null;
+        if(placeOrderRequest.itemId.equals("CAMERA")){
+             placeOrderResponse = PlaceOrderResponse.builder().date(US_IN.get(0).getNextcycle())
+                    .orderId(US_IN.get(0).getOrderid())
+                    .status("OrderPlaced").build();
         }
-
-        int nextSlot = new Random().nextInt(10);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, nextSlot);
-        String newDate = sdf.format(cal.getTime());
-
-        PlaceOrderResponse placeOrderResponse = PlaceOrderResponse.builder().date(newDate).orderId(orderId)
-                .status("OrderPlaced").build();
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(placeOrderResponse);
 
         return Response.ok(placeOrderResponse).build();
     }

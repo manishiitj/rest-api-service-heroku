@@ -1,15 +1,14 @@
 package com.javaeelab.webservices.rest.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 
 @Data
-@Entity
-@Table(name = "hackorders")
+@Builder
 public class Order {
-	@Id
 	private String orderid;
 	private String itemid;
 	private String sellerid;
@@ -17,5 +16,5 @@ public class Order {
 	private String entityid;
 	private String status;
 	private int weight;
-	private int nextcycle;
+	private String nextcycle;
 }
