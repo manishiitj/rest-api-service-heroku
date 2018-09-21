@@ -74,7 +74,7 @@ public class EmployeeInfoApi {
     }
 
 
-    @POST
+    @GET
     @Path("placeOrder")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
