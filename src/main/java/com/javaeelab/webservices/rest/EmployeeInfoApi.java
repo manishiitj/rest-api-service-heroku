@@ -35,10 +35,12 @@ public class EmployeeInfoApi {
 
     private static List<Order> US_IN = Arrays.asList(
             Order.builder().customerid("IN_BLR").sellerid("US_1").entityid("US_IN").itemid("CAMERA").nextcycle
-                    ("25Sept18").orderid("1").status("OrderPlace").weight(8).build()
+                    ("25Sept18").orderid("1").status("OrderPlaced").weight(8).build(),
+            Order.builder().customerid("IN_BOM").sellerid("US_2").entityid("US_IN").itemid("MOBILE").nextcycle
+                    ("25Sept18").orderid("2").status("OrderPlaced").weight(2).build(),
+            Order.builder().customerid("AUS_ML").sellerid("US_3").entityid("US_AUS").itemid("TABLET").nextcycle
+                    ("27Sept18").orderid("3").status("OrderPlaced").weight(5).build()
     );
-    private static Order US_EU;
-    private static Order CN;
 
     @GET
     @Path("all")
@@ -84,25 +86,27 @@ public class EmployeeInfoApi {
                     .orderId(US_IN.get(0).getOrderid())
                     .status("OrderPlaced").build();
         }
+        if(placeOrderRequest.itemId.equals("MOBILE")){
+            placeOrderResponse = PlaceOrderResponse.builder().date(US_IN.get(1).getNextcycle())
+                    .orderId(US_IN.get(1).getOrderid())
+                    .status("OrderPlaced").build();
+        }
+        if(placeOrderRequest.itemId.equals("TABLET")){
+            placeOrderResponse = PlaceOrderResponse.builder().date(US_IN.get(2).getNextcycle())
+                    .orderId(US_IN.get(2).getOrderid())
+                    .status("OrderPlaced").build();
+        }
 
         return Response.ok(placeOrderResponse).build();
     }
 //
-//    @POST
-//    @Path("getOrders")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public Response getOrders(GetOrdersRequest getOrdersRequest) throws Exception {
-//        List<OrderDO> orders;
-//        if (getOrdersRequest.clientType.equals("seller")) {
-//            orders = orderDAO.getOrders("seller", getOrdersRequest.value);
-//        } else {
-//            orders = orderDAO.getOrders("entity", getOrdersRequest.value);
-//        }
-//        String json = objectMapper.writeValueAsString(orders);
-//
-//        return Response.ok(json, MediaType.APPLICATION_JSON).build();
-//    }
+    @POST
+    @Path("getOrders")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getOrders() throws Exception {
+        return Response.ok(US_IN).build();
+    }
 //
 //    @POST
 //    @Path("updateOrderStatus")
