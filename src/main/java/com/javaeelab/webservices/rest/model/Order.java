@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 @Entity
 @Table(name = "hackorders")
 public class Order {
+	@Id
 	private String orderid;
 	private String itemid;
 	private String sellerid;
