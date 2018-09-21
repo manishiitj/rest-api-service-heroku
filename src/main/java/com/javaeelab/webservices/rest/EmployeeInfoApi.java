@@ -117,7 +117,7 @@ public class EmployeeInfoApi {
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(placeOrderResponse);
 
-        return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        return Response.ok(placeOrderResponse).build();
     }
 //
 //    @POST

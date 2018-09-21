@@ -22,7 +22,7 @@
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
         <!-- Annotated entity classes -->
-        <mapping class="com.javaeelab.webservices.rest.OrderEntity"/>
+        <mapping class="com.javaeelab.webservices.rest.*"/>
 
     </session-factory>
 </hibernate-configuration>
