@@ -74,7 +74,7 @@ public class EmployeeInfoApi {
     }
 
 
-    @GET
+    @POST
     @Path("placeOrder")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -100,7 +100,7 @@ public class EmployeeInfoApi {
         return Response.ok(placeOrderResponse).build();
     }
 //
-    @POST
+    @GET
     @Path("getOrders")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
